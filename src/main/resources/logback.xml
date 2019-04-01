@@ -8,6 +8,11 @@
         </encoder>
     </appender>
 
+    <logger name="io.netty" level="OFF"/>
+    <logger name="org.asynchttpclient.netty" level="OFF"/>
+    <logger name="org.http4s.blaze" level="OFF"/>
+    <logger name="org.http4s" level="INFO"/>
+
     <root level="${LEVEL}">
         <appender-ref ref="STDOUT" />
     </root>
