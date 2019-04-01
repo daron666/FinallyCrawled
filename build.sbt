@@ -45,7 +45,8 @@ lazy val otherDeps = Seq(
   "ch.qos.logback" % "logback-classic" % "1.2.3",
   "org.jsoup" % "jsoup" % "1.11.3",
   "org.scalactic" %% "scalactic" % "3.0.5",
-  "org.scalatest" %% "scalatest" % "3.0.5" % "test"
+  "org.scalatest" %% "scalatest" % "3.0.5" % "test",
+  "com.github.pureconfig" %% "pureconfig" % "0.10.2"
 )
 
 libraryDependencies ++= catsDeps ++ sttpDeps ++ http4sDeps ++ sangriaDeps ++ circeDeps ++ otherDeps

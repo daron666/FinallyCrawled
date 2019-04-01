@@ -31,11 +31,21 @@ import scala.util.{Failure, Success}
 
 object Application extends IOApp {
 
-  //TODO: Should be config
-  private val port: Int = 8080
-  private val host: String = "localhost"
-  private val blockingPoolSize: Int = 5
+  import pureconfig.generic.auto._
 
+  /**
+    * For now I decided not to control config loading as an effect just for simplicity
+    */
+  private val config = pureconfig.loadConfigOrThrow[Config]
+  private val port: Int = config.http.port
+  private val host: String = config.http.host
+  private val blockingPoolSize: Int = config.executor.threads
+
+  /**
+    * Should be moved where it belongs better. For this current case it's ok to leave it here.
+    * @tparam F
+    * @return
+    */
   def sttpBackend[F[_] : Async]: Resource[F, SttpBackend[F, Nothing]] = {
     val alloc = Sync[F].delay(AsyncHttpClientCatsBackend[F]())
     val free = (bc: SttpBackend[F, Nothing]) => Sync[F].delay(bc.close())
