@@ -18,6 +18,10 @@ lazy val catsDeps = Seq(
   "io.chrisdavenport" %% "log4cats-slf4j" % "0.3.0"
 )
 
+lazy val monixDeps = Seq(
+  "io.monix" %% "monix" % "3.0.0-RC2"
+)
+
 lazy val sttpDeps = Seq(
   "com.softwaremill.sttp" %% "core" % sttpVersion,
   "com.softwaremill.sttp" %% "async-http-client-backend-cats" % sttpVersion
@@ -49,7 +53,7 @@ lazy val otherDeps = Seq(
   "com.github.pureconfig" %% "pureconfig" % "0.10.2"
 )
 
-libraryDependencies ++= catsDeps ++ sttpDeps ++ http4sDeps ++ sangriaDeps ++ circeDeps ++ otherDeps
+libraryDependencies ++= catsDeps ++ sttpDeps ++ http4sDeps ++ sangriaDeps ++ circeDeps ++ otherDeps ++ monixDeps
 
 scalacOptions ++= Seq(
   "-deprecation",

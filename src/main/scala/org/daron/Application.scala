@@ -1,7 +1,6 @@
 package org.daron
 
 import cats.effect._
-import cats.syntax.functor._
 import com.softwaremill.sttp.SttpBackend
 import com.softwaremill.sttp.asynchttpclient.cats.AsyncHttpClientCatsBackend
 import io.chrisdavenport.log4cats.Logger
@@ -14,7 +13,7 @@ import org.http4s.implicits._
 import org.http4s.server.Server
 import org.http4s.server.blaze._
 
-object Application extends IOApp {
+trait Application extends {
 
   //Don't remove
   import pureconfig.generic.auto._
@@ -76,5 +75,5 @@ object Application extends IOApp {
     server[F]
   }
 
-  override def run(args: List[String]): IO[ExitCode] = program[IO].use(_ => IO.never.as(ExitCode.Success))
+
 }

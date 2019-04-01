@@ -2,4 +2,6 @@
 Small crawler in a pure way wow
 
 It uses http4s as a server and sangria as a graphQL library.
-Please run it with `sbt run` and try to reach `http://127.0.0.1:8080`
+
+To run it with Cats-Effect's IO please use `sbt "runMain org.daron.ApplicationIO"`
+To run it with Monix's Task please use `sbt "runMain org.daron.ApplicationMonix"`
