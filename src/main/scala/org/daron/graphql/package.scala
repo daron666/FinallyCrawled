@@ -2,23 +2,14 @@ package org.daron
 
 import java.net.URI
 
-import cats.effect._
 import cats.syntax.either._
-import io.circe.Json
 import org.daron.html.HttpHeadlineParser.{H1, H2, HeaderTag}
-import org.daron.services.HeadlinesService
 import sangria.ast
-import sangria.ast.Document
-import sangria.execution.{Executor, _}
-import sangria.marshalling.circe._
 import sangria.marshalling.{CoercedScalaResultMarshaller, FromInput, ResultMarshaller}
-import sangria.parser.SyntaxError
 import sangria.schema.{Argument, EnumType, EnumValue, ScalarType}
 import sangria.validation.ValueCoercionViolation
 
-import scala.concurrent.ExecutionContext
 import scala.util.Try
-import scala.util.control.NonFatal
 
 /**
   * This package object should be split into meaningful parts.
@@ -89,60 +80,4 @@ package object graphql {
     argumentType = HeaderEnum,
     description = "Header Tag value to look"
   )
-
-  def formatError(error: Throwable): Json = error match {
-    case syntaxError: SyntaxError =>
-      Json.obj("errors" → Json.arr(
-        Json.obj(
-          "message" → Json.fromString(syntaxError.getMessage),
-          "locations" → Json.arr(Json.obj(
-            "line" → Json.fromBigInt(syntaxError.originalError.position.line),
-            "column" → Json.fromBigInt(syntaxError.originalError.position.column))))))
-    case NonFatal(e) =>
-      formatError(e.getMessage)
-    case e =>
-      throw e
-  }
-
-  def formatError(message: String): Json =
-    Json.obj("errors" → Json.arr(Json.obj("message" → Json.fromString(message))))
-
-
-  /**
-    * We can use this method, but for more abstraction we can design/implement
-    * GraphQL algebra with multiple methods like ```def execute(data): F[Either[Json, Json]]```
-    *
-    * @param query
-    * @param operationName
-    * @param variables
-    * @param service
-    * @param executionContext
-    * @tparam F
-    * @return
-    */
-  def executeGraphQl[F[_] : Effect](query: Document,
-                                    operationName: Option[String],
-                                    variables: Json,
-                                    service: HeadlinesService[F],
-                                    executionContext: ExecutionContext) = {
-
-    implicit val ec = executionContext
-
-    IO.fromFuture {
-
-      IO.apply(
-        Executor.execute(
-          Schema.schema,
-          query,
-          service,
-          variables = if (variables.isNull) Json.obj() else variables,
-          operationName = operationName,
-          exceptionHandler = ExceptionHandler {
-            case (_, e) ⇒ HandledException(e.getMessage)
-          }
-        )
-      )
-    }.to[F]
-  }
-
 }
