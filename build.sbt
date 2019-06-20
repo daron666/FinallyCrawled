@@ -50,7 +50,9 @@ lazy val otherDeps = Seq(
   "org.jsoup" % "jsoup" % "1.11.3",
   "org.scalactic" %% "scalactic" % "3.0.5",
   "org.scalatest" %% "scalatest" % "3.0.5" % "test",
-  "com.github.pureconfig" %% "pureconfig" % "0.10.2"
+  "com.github.pureconfig" %% "pureconfig" % "0.10.2",
+  "dev.zio" %% "zio" % "1.0.0-RC8-6",
+  "dev.zio" %% "zio-interop-cats" % "1.0.0-RC8-6"
 )
 
 libraryDependencies ++= catsDeps ++ sttpDeps ++ http4sDeps ++ sangriaDeps ++ circeDeps ++ otherDeps ++ monixDeps
